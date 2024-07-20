@@ -1,0 +1,2 @@
+# drinkit-ratings-bot
+ 
