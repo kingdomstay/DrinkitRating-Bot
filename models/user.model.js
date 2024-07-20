@@ -5,7 +5,7 @@ const UserModel = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true
         },
-        telegramId: {
+        chatId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             unique: true

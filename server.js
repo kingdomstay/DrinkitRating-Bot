@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import { bot } from './bot/bot.js';
 import 'dotenv/config'
+import './cron/index.js';
 import initDatabase from "./utils/initDatabase.js";
 
 const fastify = Fastify({ logger: true });

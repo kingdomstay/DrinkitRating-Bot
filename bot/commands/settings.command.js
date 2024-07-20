@@ -7,10 +7,10 @@ import {Markup} from "telegraf";
 import {getUserChannels, updateUserChannel} from "../../controllers/settings.controller.js";
 
 const settingsCommand = Composer.command('settings', async (ctx) => {
-    const telegramId = ctx.from.id;
+    const chatId = ctx.from.id;
 
     try {
-        const user = await User.findOne({where: {telegramId}})
+        const user = await User.findOne({where: {chatId}})
         if (!user) throw new Error('User not found')
 
         const { selectedChannels, coffeeShops } = await getUserChannels(user.id)
@@ -34,11 +34,11 @@ const settingsCommand = Composer.command('settings', async (ctx) => {
 
 // Обработка действий пользователя
 const settingsToggleShop = Composer.action(/toggle_shop_(\d+)/, async (ctx) => {
-    const telegramId = ctx.from.id;
+    const chatId = ctx.from.id;
     const coffeeShopId = parseInt(ctx.match[1]);
 
     try {
-        const user = await User.findOne({ where: { telegramId } });
+        const user = await User.findOne({ where: { chatId } });
         if (!user) throw new Error('User not found');
 
         await updateUserChannel(user.id, coffeeShopId);

@@ -9,9 +9,9 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 // Обработчики команд
 bot.start(async (ctx) => {
     const username = ctx.message.from.username;
-    const telegramId = ctx.message.from.id;
+    const chatId = ctx.chat.id;
 
-    const [user, created] = await User.findOrCreate({ where: {telegramId, username} });
+    const [user, created] = await User.findOrCreate({ where: {chatId, username} });
     if (created) {
         ctx.reply(`Привет, ${ctx.message.from.first_name}! Посмотри доступные команды через /help`);
     } else {
