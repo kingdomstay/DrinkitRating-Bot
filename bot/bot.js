@@ -2,7 +2,7 @@ import {Telegraf} from 'telegraf';
 import 'dotenv/config'
 import { User} from "../models/index.js";
 import {settingsCommand, settingsToggleShop} from "./commands/settings.command.js";
-import {requestFeedbacks} from "../controllers/feedback.controller.js";
+import {prepareSendFeedback, requestFeedbacks} from "../controllers/feedback.controller.js";
 
 // Инициализация бота
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -30,9 +30,16 @@ bot.help(ctx => {
 })
 
 bot.command('stop', (ctx) => {
+    ctx.reply('Ты приостановил получение отзывов. Захочешь продолжить, пиши /start')
+})
+bot.command('request', (ctx) => {
     // Заглушка
     requestFeedbacks()
-    ctx.reply('Ты приостановил получение отзывов. Захочешь продолжить, пиши /start')
+})
+bot.command('send', async (ctx) => {
+    // Заглушка
+    const result = await prepareSendFeedback()
+    console.log(result)
 })
 
 // Обработчик неизвестных запросов
