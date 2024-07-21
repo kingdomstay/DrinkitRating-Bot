@@ -2,6 +2,7 @@ import {Telegraf} from 'telegraf';
 import 'dotenv/config'
 import { User} from "../models/index.js";
 import {settingsCommand, settingsToggleShop} from "./commands/settings.command.js";
+import {requestFeedbacks} from "../controllers/feedback.controller.js";
 
 // Инициализация бота
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -20,6 +21,7 @@ bot.start(async (ctx) => {
     }
 });
 
+
 // Settings
 bot.use(settingsCommand, settingsToggleShop)
 
@@ -29,6 +31,7 @@ bot.help(ctx => {
 
 bot.command('stop', (ctx) => {
     // Заглушка
+    requestFeedbacks()
     ctx.reply('Ты приостановил получение отзывов. Захочешь продолжить, пиши /start')
 })
 
