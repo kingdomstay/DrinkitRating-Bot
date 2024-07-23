@@ -2,7 +2,7 @@ import {Telegraf} from 'telegraf';
 import 'dotenv/config'
 import { User} from "../models/index.js";
 import {settingsCommand, settingsToggleShop} from "./commands/settings.command.js";
-import {prepareSendFeedback, requestFeedbacks} from "../controllers/feedback.controller.js";
+import {prepareSendFeedback, requestFeedbacks, sendFeedbackToUsers} from "../controllers/feedback.controller.js";
 
 // Инициализация бота
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -38,8 +38,7 @@ bot.command('request', (ctx) => {
 })
 bot.command('send', async (ctx) => {
     // Заглушка
-    const result = await prepareSendFeedback()
-    console.log(result)
+    const result = await sendFeedbackToUsers()
 })
 
 // Обработчик неизвестных запросов
@@ -59,5 +58,8 @@ bot.on('text', (ctx) => {
 bot.launch()
     .then(() => console.log('[BOT] Started'))
     .catch(err => console.error('[BOT] Launch error:', err));
+
+process.once('SIGINT', () => {bot.stop('SIGINT'); console.log('Test')});
+process.once('SIGTERM', () => {bot.stop('SIGTERM'); console.log('Test')});
 
 export { bot };

@@ -16,7 +16,7 @@ const getFeedbacks = async (comments=true, units) => {
         const response =  await api.get(`customer-feedback/recent-feedbacks?includeFeedbacksWithEmptyComment=${!comments}&units=${units}`)
         return response.data.orderFeedbacks
     } catch (err) {
-        throw new Error(`[API] Error: ${error}`)
+        throw new Error(`[API] Error: ${err}`)
     }
 }
 

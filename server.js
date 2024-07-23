@@ -17,10 +17,6 @@ const startServer = async () => {
     try {
         await fastify.listen({ port: process.env.FASTIFY_PORT, host: process.env.FASTIFY_HOST });
         console.log(`[SERVER] Started on ${process.env.FASTIFY_HOST}:${process.env.FASTIFY_PORT}`);
-
-        // Установка вебхука
-        await bot.telegram.setWebhook(`${process.env.WEBHOOK_URL}/bot`);
-        console.log('[WEBHOOK] Selected');
     } catch (err) {
         fastify.log.error(err);
         process.exit(1);
