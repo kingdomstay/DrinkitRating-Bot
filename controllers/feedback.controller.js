@@ -35,10 +35,10 @@ export async function requestFeedbacks() {
                 console.log('Создана новая запись')
                 lastOrderId = feedback.orderId
             } else if (feedback.orderId === lastOrderId) {
-                await bot.telegram.sendMessage(process.env.BOT_SERVICE_GROUP_ID, 'Возник дубль, проверяю следующий отзыв')
+     //            await bot.telegram.sendMessage(process.env.BOT_SERVICE_GROUP_ID, 'Возник дубль, проверяю следующий отзыв')
             }
         }
-        await bot.telegram.sendMessage(process.env.BOT_SERVICE_GROUP_ID, 'Отзывов с комментариями больше нет, перехожу к отзывам без комментариев')
+    //    await bot.telegram.sendMessage(process.env.BOT_SERVICE_GROUP_ID, 'Отзывов с комментариями больше нет, перехожу к отзывам без комментариев')
 
         // Получение комментариев
         feedbacks = await getFeedbacks(false, listShops)
@@ -64,11 +64,11 @@ export async function requestFeedbacks() {
                 console.log('Создана новая запись')
                 lastOrderId = feedback.orderId
             } else if (feedback.orderId === lastOrderId) {
-                await bot.telegram.sendMessage('-4205295241', `${feedback.orderId}=${lastOrderId}: Дубль`)
+         //       await bot.telegram.sendMessage('-4205295241', `${feedback.orderId}=${lastOrderId}: Дубль`)
             }
         }
 
-        await bot.telegram.sendMessage('-4205295241', 'Все отзывы обработаны')
+      //  await bot.telegram.sendMessage('-4205295241', 'Все отзывы обработаны')
     } catch (err) {
         throw Error (`Error: ${err}`)
     }
@@ -125,6 +125,8 @@ export async function sendFeedbackToUsers() {
                 console.log('Work')
                 console.log(groupedFeedbacks[shopId])
                 const {chatId} = await User.findOne({ where: { id: channel.UserId } })
+                console.log(chatId)
+                bot.telegram.user
                 await bot.telegram.sendMessage(chatId, `${generatedMessage}`, {parse_mode: "HTML"});
             }
             await Feedbacks.update( { sended: 1 }, { where: { sended: 0 } })

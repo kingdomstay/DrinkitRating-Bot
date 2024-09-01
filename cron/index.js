@@ -2,14 +2,13 @@ import cron from 'node-cron';
 import {bot} from "../bot/bot.js";
 import {User} from "../models/index.js";
 import {requestFeedbacks, sendFeedbackToUsers} from "../controllers/feedback.controller.js";
+import {updateToken} from "../utils/api.js";
 
 cron.schedule('0 */12 * * *', async () => {
     try {
-        const users = await User.findAll();
-        for (const user of users) {
-            await bot.telegram.sendMessage(user.chatId, 'Это сообщение отправляется каждые 12 часов');
-        }
-        console.log('Scheduled message sent successfully.');
+        await updateToken()
+        await bot.telegram.sendMessage('531134665', 'Токен был обновлен');
+        console.log('Токен был обновлен');
     } catch (error) {
         console.error('Error sending scheduled message:', error);
     }

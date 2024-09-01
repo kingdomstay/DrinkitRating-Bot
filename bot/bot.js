@@ -2,14 +2,31 @@ import {Telegraf} from 'telegraf';
 import 'dotenv/config'
 import { User} from "../models/index.js";
 import {settingsCommand, settingsToggleShop} from "./commands/settings.command.js";
-import {prepareSendFeedback, requestFeedbacks, sendFeedbackToUsers} from "../controllers/feedback.controller.js";
+import {requestFeedbacks, sendFeedbackToUsers} from "../controllers/feedback.controller.js";
+import {updateToken} from "../utils/api.js";
 
 // Инициализация бота
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
+// Middleware для обработки ошибок
+bot.catch((err, ctx) => {
+    console.error(`Error for ${ctx.updateType}`, err);
+
+    // Проверка на ошибку, связанной с блокировкой бота пользователем
+    if (err.code === 403 && err.description === 'Forbidden: bot was blocked by the user') {
+        console.log(`User ${ctx.from.id} blocked the bot.`);
+        // Тут можно добавить код для удаления пользователя из базы данных или другую логику
+    } else {
+        console.error('Unhandled error:', err);
+    }
+});
+
 // Обработчики команд
 bot.start(async (ctx) => {
     const username = ctx.message.from.username;
+    if (!username) {
+        return ctx.reply('Привет! Чтобы воспользоваться ботом понадобится имя пользователя')
+    }
     const chatId = ctx.chat.id;
 
     const [user, created] = await User.findOrCreate({ where: {chatId, username} });
@@ -36,9 +53,13 @@ bot.command('request', (ctx) => {
     // Заглушка
     requestFeedbacks()
 })
+bot.command('refresh', async (ctx) => {
+    const tokens = await updateToken()
+    ctx.reply('Токен был обновлен')
+})
 bot.command('send', async (ctx) => {
     // Заглушка
-    const result = await sendFeedbackToUsers()
+    await sendFeedbackToUsers()
 })
 
 // Обработчик неизвестных запросов

@@ -7,7 +7,7 @@ import {Markup} from "telegraf";
 import {getUserChannels, updateUserChannel} from "../../controllers/settings.controller.js";
 
 const settingsCommand = Composer.command('settings', async (ctx) => {
-    const chatId = ctx.from.id;
+    const chatId = ctx.chat.id
 
     try {
         const user = await User.findOne({where: {chatId}})
@@ -34,7 +34,7 @@ const settingsCommand = Composer.command('settings', async (ctx) => {
 
 // Обработка действий пользователя
 const settingsToggleShop = Composer.action(/toggle_shop_(\d+)/, async (ctx) => {
-    const chatId = ctx.from.id;
+    const chatId = ctx.chat.id
     const coffeeShopId = parseInt(ctx.match[1]);
 
     try {
